@@ -65,6 +65,12 @@
   box-shadow: 2px 2px 6px rgba(0,0,0,0.5);
 }
 
+#registro a {
+  text-decoration: none;
+  color: rgb(177, 177, 177);
+  margin-top: 10px
+}
+
 #app{
   display: none;
 }

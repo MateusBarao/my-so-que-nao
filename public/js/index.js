@@ -1,16 +1,12 @@
 let inputNome = document.getElementById('nome');
-
 let inputEmail = document.getElementById('email');
-
 let inputSenha = document.getElementById('senha');
-
 let inputConfirma = document.getElementById('confirmacao');
-
 let inputFile = document.getElementById('foto');
-
 let form = document.getElementById('formularioCadastro');
-
 let formLogin = document.getElementById('formularioLogin');
+let linkRegistro = document.getElementById('linkRegistro');
+let linkLogin = document.getElementById('linkLogin');
 
 const verificaCampoFoiPreenchido = (evento)=>{
 
@@ -33,15 +29,12 @@ const onFileChange = (evt) => {
 }
 
 inputNome.addEventListener('blur', verificaCampoFoiPreenchido);
-
 inputEmail.addEventListener('blur', verificaCampoFoiPreenchido);
-
 inputSenha.addEventListener('blur', verificaCampoFoiPreenchido);
-
 inputConfirma.addEventListener('blur', verificaCampoFoiPreenchido);
-
 inputFile.addEventListener('change', onFileChange);
-
+linkRegistro.addEventListener('click', onLinkRegistroClick);
+linkLogin.addEventListener('click', onLinkLoginClick)
 
 form.addEventListener('submit', 
     async (evt) => {
@@ -71,6 +64,16 @@ formLogin.addEventListener('submit', onFormLoginSubmit);
 function onFormLoginSubmit(evt) {
     evt.preventDefault();
     login();
+}
+
+function onLinkRegistroClick(evt){
+    evt.preventDefault();
+    mostrarRegistro();
+}
+
+function onLinkLoginClick(evt){
+    evt.preventDefault();
+    mostrarLogin();
 }
 
 async function login() {
@@ -121,6 +124,27 @@ function mostrarApp(usuario) {
     let imgAvatar = document.getElementById('app-avatar');
     imgAvatar.setAttribute('alt', `Foto de ${usuario.nome}`)
     imgAvatar.setAttribute('src', `img/avatares/${usuario.foto}`)
+}
+
+function mostrarRegistro(){
+    document.getElementById("registro").style.display = 'block'
+
+    document.getElementById('login').style.display = 'none'
+
+    document.getElementById('app').style.display = 'none'
+
+    inputNome.focus();
+}
+
+function mostrarLogin(){
+    document.getElementById("login").style.display = 'block'
+
+    document.getElementById('registro').style.display = 'none'
+
+    document.getElementById('app').style.display = 'none'
+
+    document.getElementById('login-email').focus();
+
 }
 
 async function carregarAmigos() {
