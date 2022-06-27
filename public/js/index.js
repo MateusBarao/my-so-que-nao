@@ -10,6 +10,8 @@ let inputFile = document.getElementById('foto');
 
 let form = document.getElementById('formularioCadastro');
 
+let formLogin = document.getElementById('formularioLogin');
+
 const verificaCampoFoiPreenchido = (evento)=>{
 
     console.log(evento);
@@ -61,15 +63,47 @@ form.addEventListener('submit',
 
             mostrarApp(usuario);
         }
-        
-        
 
         });
+
+formLogin.addEventListener('submit', onFormLoginSubmit);
+
+function onFormLoginSubmit(evt) {
+    evt.preventDefault();
+    login();
+}
+
+async function login() {
+    let email = document.getElementById('login-email').value;
+
+    let senha = document.getElementById('login-senha').value;
+
+    let resposta = await fetch('http://localhost:3000/api/v1/usuarios/login', 
+        {
+            method: 'POST',
+            body: JSON.stringify({email, senha}),
+            headers: {'Content-Type': 'application/json'}
+        }
+    )
+
+    if (resposta.status == 200){
+        let corpoDaResposta = await resposta.json();
+    
+        sessionStorage.setItem('mysoquenao-token', corpoDaResposta.token);
+        sessionStorage.setItem('usuario', JSON.stringify(corpoDaResposta.usuario));
+
+        mostrarApp(corpoDaResposta.usuario);
+    }
+
+}
+
 
 function mostrarApp(usuario) {
     console.log(usuario)
 
     document.getElementById('registro').style.display = 'none';
+
+    document.getElementById("login").style.display = 'none'
 
     document.getElementById('app').style.display = 'block';
 
@@ -84,42 +118,4 @@ function mostrarApp(usuario) {
     imgAvatar.setAttribute('src', `img/avatares/${usuario.foto}`)
 }
 
-let amigos = [
-    {
-        id: 1,
-        nome: "Wendel", 
-        email: "wendel@digitalhouse.com",
-        foto: "palha.jpg"
-        
-    },
-    {
-        id: 2,
-        nome: "Sérgio",
-        email: "sergio@digitalhouse.com",
-        foto: "peixeira.jpg"
-    },
-    {
-        id: 3,
-        nome: "Silvia",
-        email: "silvia@digitalhouse.com",
-        foto: "rh.png"
-    }
-]
 
-let listaDeAmigos = document.getElementById("listaDeAmigos");
-
-let string = '';
-
-for (let i = 0; i < amigos.length; i++) {
-    const amigo = amigos[i];
-    string += `
-        <article>
-            <img src="img/${amigo.foto}" alt="Foto de ${amigo.nome}">
-            <span>${amigo.nome}</span>
-            <a href="mailto:${amigo.email}">${amigo.email}</a>
-        </article>
-    `
-}
-
-
-listaDeAmigos.innerHTML += string;
