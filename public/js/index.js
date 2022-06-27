@@ -93,10 +93,15 @@ async function login() {
         sessionStorage.setItem('usuario', JSON.stringify(corpoDaResposta.usuario));
 
         mostrarApp(corpoDaResposta.usuario);
+
+        carregarAmigos();
+    } else if (resposta.status == 500) {
+        return alert("Tente novamente mais tarde")
+    } else {
+        return alert("Falha de autenticação")
     }
-
+    
 }
-
 
 function mostrarApp(usuario) {
     console.log(usuario)
@@ -118,4 +123,15 @@ function mostrarApp(usuario) {
     imgAvatar.setAttribute('src', `img/avatares/${usuario.foto}`)
 }
 
+async function carregarAmigos() {
+    let resposta = await fetch(
+        'api/v1/amigos',
+        {
+            method: 'GET',
+            headers: {
+                'Authorization': `bearer ${sessionStorage.getItem('mysoquenao-token')}`
+            }
 
+        }
+    )
+}
